@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+        <script>
+            $(function(){
+                var host = window.document.location.host.replace(/:.*/, '');
+                var ws = "ws://" + host + ":8888";
+                var socket = new WebSocket(ws);
+                console.log(socket.readyState);
+
+                socket.onopen = function(){
+                    console.log(socket.readyState);
+                }
+                socket.onmessage = function(message){
+                    console.log(socket.readyState + " " + message.data);
+                    $("#messages").prepend("<li>" + message.data + "</li>");
+                }
+                socket.onclose = function(){
+                    console.log(socket.readyState);
+                }
+                $(window).unload(function() {
+                    socket.onclose();
+                    console.log(socket.readyState);
+                })
+
+                $("#sendBtn").on("click",function(){
+                    message = $("#message").val()
+                    socket.send(message);
+                });
+            })
+        </script>
+    </head>
+    <body>
+        <h1>Hello World!</h1>
+        <input type="text" id="message" /><button id="sendBtn">send</button>
+        <ul id="messages">
+        </ul>
+    </body>
+</html>
