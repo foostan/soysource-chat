@@ -7,9 +7,10 @@ $(function(){
     socket.onopen = function(){
         console.log(socket.readyState);
     }
-    socket.onmessage = function(message){
-        console.log(socket.readyState + " " + message.data);
-        $("#messages").prepend("<li>" + message.data + "</li>");
+    socket.onmessage = function(data_json){
+        data = JSON.parse(data_json.data);
+        console.log(socket.readyState + " " + data.message + " " + data.timestamp);
+        $("#messages").prepend("<li>" + data.message + " [" + data.timestamp + "]</li>");
     }
     socket.onclose = function(){
         console.log(socket.readyState);
