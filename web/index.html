@@ -1,42 +1,78 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Document</title>
-        <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-        <script>
-            $(function(){
-                var host = window.document.location.host.replace(/:.*/, '');
-                var ws = "ws://" + host + ":8888";
-                var socket = new WebSocket(ws);
-                console.log(socket.readyState);
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Soysource chat</title>
 
-                socket.onopen = function(){
-                    console.log(socket.readyState);
-                }
-                socket.onmessage = function(message){
-                    console.log(socket.readyState + " " + message.data);
-                    $("#messages").prepend("<li>" + message.data + "</li>");
-                }
-                socket.onclose = function(){
-                    console.log(socket.readyState);
-                }
-                $(window).unload(function() {
-                    socket.onclose();
-                    console.log(socket.readyState);
-                })
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="assets/css/soysource.css" rel="stylesheet">
+    <link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
 
-                $("#sendBtn").on("click",function(){
-                    message = $("#message").val()
-                    socket.send(message);
-                });
-            })
-        </script>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-        <input type="text" id="message" /><button id="sendBtn">send</button>
-        <ul id="messages">
-        </ul>
-    </body>
+    <!--
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+    -->
+
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+    <!-- Navbar
+    ================================================== -->
+    <!--
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Soysource chat</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    -->
+
+    <div class="chatroom">
+      <div class="container">
+          <input type="text" id="message" class="input-xxlarge search-query" />
+          <button id="btn-send" class="btn btn-primary">send</button>
+
+          <ul id="messages" class="nav nav-pills nav-stacked">
+          </ul>
+
+      </div>
+    </div>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/google-code-prettify/prettify.js"></script>
+    <script src="assets/js/bootstrap-transition.js"></script>
+    <script src="assets/js/bootstrap-alert.js"></script>
+    <script src="assets/js/bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-dropdown.js"></script>
+    <script src="assets/js/bootstrap-scrollspy.js"></script>
+    <script src="assets/js/bootstrap-tab.js"></script>
+    <script src="assets/js/bootstrap-tooltip.js"></script>
+    <script src="assets/js/bootstrap-popover.js"></script>
+    <script src="assets/js/bootstrap-button.js"></script>
+    <script src="assets/js/bootstrap-collapse.js"></script>
+    <script src="assets/js/bootstrap-carousel.js"></script>
+    <script src="assets/js/bootstrap-typeahead.js"></script>
+    <script src="assets/js/bootstrap-affix.js"></script>
+    <script src="assets/js/application.js"></script>
+    <script src="assets/js/chat.js"></script>
+  </body>
 </html>
