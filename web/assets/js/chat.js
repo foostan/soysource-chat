@@ -25,13 +25,18 @@ $(function(){
     });
 
     $("#message").live("keypress",function (e) {
-        if(e.keyCode == 13) {
-            box = $(this);
-            t_val = $(box).val();
-            if(t_val.length > 0) {
-                send_message();
+        if(e.keyCode == 13 && e.shiftKey) {
+            $(this).attr('rows', Number($(this).attr('rows')) + 1);
+        } else {
+            if(e.keyCode == 13) {
+                box = $(this);
+                t_val = $(box).val();
+                if(t_val.length > 0) {
+                    $(this).attr('rows', 1);
+                    send_message();
+                }
+                e.preventDefault();
             }
-            e.preventDefault();
         }
     });
 
