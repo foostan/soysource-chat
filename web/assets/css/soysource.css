@@ -14,3 +14,8 @@ body {
     background: #222;
 }
 
+.chatroom #message {
+
+    width: 100%;
+}
+

@@ -10,7 +10,7 @@ $(function(){
     socket.onmessage = function(data_json){
         data = JSON.parse(data_json.data);
         console.log(socket.readyState + " " + data.message + " " + data.timestamp);
-        $("#messages").prepend("<li>" + data.message + " [" + data.timestamp + "]</li>");
+        $("#messages").prepend("<li>" + data.message + "<div class=\"pull-right\">" + data.timestamp + "</div></li>");
     }
     socket.onclose = function(){
         console.log(socket.readyState);
@@ -19,10 +19,6 @@ $(function(){
         socket.onclose();
         console.log(socket.readyState);
     })
-
-    $("#btn-send").on("click",function(){
-        send_message();
-    });
 
     $("#message").live("keypress",function (e) {
         if(e.keyCode == 13 && e.shiftKey) {
