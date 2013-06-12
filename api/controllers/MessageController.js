@@ -86,7 +86,7 @@ var MessageController = {
         } else {
             res.json({
                 result: false,
-                message: 'no id'
+                message: 'validation failed'
             });
         }
 
