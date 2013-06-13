@@ -2,17 +2,38 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><%- title %></title>
         <!-- Stylesheets from your assets folder are included here -->
-        <%- assets.css() %>
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/css/soysource.css" rel="stylesheet">
     </head>
 
     <body>
         <%- body %>
 
-        <!-- Templates from your view path are included here -->
-        <%- assets.templateLibrary() %>
-        <!-- Javascripts from your assets folder are included here -->
+        <script type="text/javascript" src="/js/jquery.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-transition.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-alert.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-modal.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-dropdown.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-scrollspy.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-tab.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-tooltip.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-popover.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-button.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-collapse.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-carousel.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-typeahead.js"></script>
+        <script type="text/javascript" src="/js/bootstrap-affix.js"></script>
+
+        <script type="text/javascript" src="/js/holder/holder.js"></script>
+        <script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+
+        <script type="text/javascript" src="/js/application.js"></script>
+
         <%- assets.js() %>
     </body>
 </html>
