@@ -74,15 +74,17 @@ var UserController = {
     },
 
     update: function (req,res) {
-        var id     = req.param('id');
+        var id     = req.session.user.id;
         var passwd = req.param('passwd');
+        var rep_passwd = req.param('rep_passwd');
 
         // todo: validate name, passwd
-        if (!(id && passwd)) {
-            return res.json({
-                result: false,
-                message: 'validation failed'
-            });
+        if (!(id && passwd && rep_passwd)) {
+            return res.view();
+        }
+
+        else if (passwd !== rep_passwd) {
+            return res.view({error: 'Invalid password'});
         }
 
         // validation success
@@ -95,10 +97,7 @@ var UserController = {
                 // find error
                 if (err) {
                     console.log("Find failed:", err);
-                    return res.json({
-                        result: false,
-                        message: 'find failed'
-                    });
+                    res.view({error: 'Find failed'});
                 }
 
                 // find success
@@ -114,13 +113,10 @@ var UserController = {
                         }, function(err, user) {
                             if (err) {
                                 console.log("Update failed:", user);
-                                return res.json({
-                                    result: false,
-                                    message: 'update failed'
-                                });
+                                return res.view({error: 'Update failed'});
                             } else {
                                 console.log("Message updated:", user);
-                                return res.json({result: true});
+                                return res.redirect('/user/logout');
                             }
                         });
                     }
@@ -128,10 +124,7 @@ var UserController = {
                     // user not found
                     else {
                         console.log("User not found:", id);
-                        return res.json({
-                            result: false,
-                            message: 'user not found'
-                        });
+                        return res.view({error: 'User not found'});
                     }
                 }
             });
