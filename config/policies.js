@@ -5,17 +5,10 @@
 */
 module.exports.policies = {
 
-	// Default policy (allow public access)
-	'*': true,
+    // Default policy (allow public access)
+    '*': 'authenticated',
 
-    /*
-	UserController: {
-
-		// Apply the "authenticated" policy to all actions
-		'*': 'authenticated',
-
-		// For someAction, apply 'somePolicy' instead
-		// someAction: 'somePolicy'
-	}
-    */
+    UserController: {
+        'login': true,
+    }
 };

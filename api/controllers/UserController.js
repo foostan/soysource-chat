@@ -10,7 +10,7 @@ var UserController = {
 
         // todo: validate name, passwd
         if (!(name && passwd)) {
-            res.json({
+            return res.json({
                 result: false,
                 message: 'validation failed'
             });
@@ -18,6 +18,7 @@ var UserController = {
 
         // validation success
         else {
+            var passwd_hash = require('crypto').createHash('sha256').update(passwd).digest('hex');
 
             // find user
             User.find({
@@ -26,11 +27,11 @@ var UserController = {
 
                 // find error
                 if (err) {
-                    res.json({
+                    console.log("Find failed:", err);
+                    return res.json({
                         result: false,
                         message: 'find failed'
                     });
-                    console.log("Find failed:", err);
                 }
 
                 // find success
@@ -38,31 +39,31 @@ var UserController = {
 
                     // already exsits
                     if (user) {
-                        res.json({
+                        console.log("Already exists:", user);
+                        return res.json({
                             result: false,
                             message: 'already exists'
                         });
-                        console.log("Already exists:", user);
                     }
 
                     // create newcomer
                     else {
                         User.create({
                             name: name,
-                            passwd: passwd
+                            passwd: passwd_hash
                         }).done(function(err, user) {
                             // insert error
                             if (err) {
-                                res.json({
+                                console.log("Insert failed:", user);
+                                return res.json({
                                     result: false,
                                     message: 'insert failed'
                                 });
-                                console.log("Insert failed:", user);
                             }
                             // insert success
                             else {
-                                res.json({result: true});
                                 console.log("User created:", user);
+                                return res.json({result: true});
                             }
                         });
 
@@ -78,7 +79,7 @@ var UserController = {
 
         // todo: validate name, passwd
         if (!(id && passwd)) {
-            res.json({
+            return res.json({
                 result: false,
                 message: 'validation failed'
             });
@@ -86,17 +87,18 @@ var UserController = {
 
         // validation success
         else {
+            var passwd_hash = require('crypto').createHash('sha256').update(passwd).digest('hex');
 
             // find user
             User.find(id).done(function(err, user) {
 
                 // find error
                 if (err) {
-                    res.json({
+                    console.log("Find failed:", err);
+                    return res.json({
                         result: false,
                         message: 'find failed'
                     });
-                    console.log("Find failed:", err);
                 }
 
                 // find success
@@ -108,28 +110,28 @@ var UserController = {
                         User.update({
                             id: id
                         },{
-                            passwd: passwd
+                            passwd: passwd_hash
                         }, function(err, user) {
                             if (err) {
-                                res.json({
+                                console.log("Update failed:", user);
+                                return res.json({
                                     result: false,
                                     message: 'update failed'
                                 });
-                                console.log("Update failed:", user);
                             } else {
-                                res.json({result: true});
                                 console.log("Message updated:", user);
+                                return res.json({result: true});
                             }
                         });
                     }
 
                     // user not found
                     else {
-                        res.json({
+                        console.log("User not found:", id);
+                        return res.json({
                             result: false,
                             message: 'user not found'
                         });
-                        console.log("User not found:", id);
                     }
                 }
             });
@@ -146,22 +148,74 @@ var UserController = {
             }, function(err, message) {
                 if (err) {
                     console.log("Destroy failed:", err);
-                    res.json({
+                    return res.json({
                         result: false,
                         message: 'destroy failed'
                     });
                 } else {
                     console.log("Message destroied:", id);
-                    res.json({result: true});
+                    return res.json({result: true});
                 }
             });
         } else {
-            res.json({
+            return res.json({
                 result: false,
                 message: 'validation failed'
             });
         }
 
+    },
+
+    login: function (req,res) {
+        var name   = req.param('name');
+        var passwd = req.param('passwd');
+
+        if (!(name && passwd)) {
+            res.view();
+        }
+        // todo: validate name, passwd
+
+        // validation success
+        else {
+            var passwd_hash = require('crypto').createHash('sha256').update(passwd).digest('hex');
+
+            // find user
+            User.find({
+                name: name,
+                passwd: passwd_hash
+            }).done(function(err, user) {
+
+                // find error
+                if (err) {
+                    console.log("Find failed:", err);
+                    return res.view({error: 'Find failed'});
+                }
+
+                // find success
+                else {
+
+                    // found user
+                    if (user) {
+                        req.session.authenticated = true;
+                        req.session.user = user;
+                        console.log("Authentication success:", user);
+                        return res.redirect('/');
+                    }
+
+                    // user not found
+                    else {
+                        console.log("authentication failed:", name);
+                        return res.view({error: 'Authentication failed'});
+                    }
+                }
+            });
+        }
+    },
+
+    logout: function (req,res) {
+        req.session.authenticated = false;
+        req.session.user = null;
+        return res.redirect('/user/login');
     },
 };
 module.exports = UserController;

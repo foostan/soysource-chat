@@ -1,0 +1,10 @@
+<div class="container">
+    <% if (typeof error != "undefined"){ %>
+        <span class="text-error"><%= error %></span>
+    <% } %>
+    <form class="form-inline" action="/user/login" method="post">
+        <input type="text" class="input-name" placeholder="Name" name="name">
+        <input type="password" class="input-small" placeholder="Password" name="passwd">
+        <button type="submit" class="btn">Sign in</button>
+    </form>
+</div>
