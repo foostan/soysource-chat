@@ -5,11 +5,14 @@
 var MessageController = {
 
     create: function (req,res) {
+        var user = req.session.user;
         var body = req.param('body');
 
         // todo: validate body
-        if (body) {
+        if (body && user) {
             Message.create({
+                user_id: user.id,
+                user_name: user.name,
                 body: body
             }).done(function(err, message) {
                 if (err) {
@@ -94,7 +97,7 @@ var MessageController = {
 
     findAll: function (req,res) {
 
-        Message.findAll({}).limit(10).sort('createdAt DESC').done(function(err, messages) {
+        Message.findAll({}).limit(100).sort('createdAt DESC').done(function(err, messages) {
             if (err) {
                 console.log("FindAll failed:", err);
                 res.json({

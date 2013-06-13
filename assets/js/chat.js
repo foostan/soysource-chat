@@ -16,14 +16,14 @@ $(function(){
         setup: function() {
             socket.request('/message/findAll',{}, function (messages) {
                 messages.forEach(function(message){
-                    $("#messages").append("<li>" + message.body + "<div class=\"pull-right\">" + message.createdAt + "</div></li>");
+                    $("#messages").append("<li>" + message.user_name + ": " + message.body + "<div class=\"pull-right\">" + message.createdAt + "</div></li>");
                 });
             });
         }
     }
 
     socket.on('push', function(message){
-        $("#messages").prepend("<li>" + message.body + "<div class=\"pull-right\">" + message.createdAt + "</div></li>");
+        $("#messages").prepend("<li>" + message.user_name + ": " + message.body + "<div class=\"pull-right\">" + message.createdAt + "</div></li>");
     });
 
     messenger.setup();
